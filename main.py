@@ -33,12 +33,15 @@ class ExcelToWordApp(QMainWindow):
         self.setCentralWidget(self.central_widget)
 
     def openFileNameDialog(self):
-        options = QFileDialog.Options()
-        fileName, _ = QFileDialog.getOpenFileName(self, "Выберите файл Excel", "", "Excel Files (*.xlsx)",
-                                                  options=options)
-        if fileName:
-            self.excel_file = fileName
-            self.loadExcelData(fileName)
+        try:
+            options = QFileDialog.Options()
+            fileName, _ = QFileDialog.getOpenFileName(self, "Выберите файл Excel", "", "Excel Files (*.xlsx)",
+                                                      options=options)
+            if fileName:
+                self.excel_file = fileName
+                self.loadExcelData(fileName)
+        except Exception as e:
+            QMessageBox.critical(self, 'Ошибка', f'Произошла ошибка: {e}')
 
     def loadExcelData(self, excel_file):
         self.df = pd.read_excel(excel_file)  # Считывание Excel
